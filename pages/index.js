@@ -34,7 +34,7 @@ export default function Home() {
     guest.lastName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  function addGuest(firstName:String, lastName:String, color:String, timestamp:Date, staffName:String) {
+  function addGuest(firstName,lastName, color, timestamp, staffName) {
     // Generate a unique ID for the new guest
   
     // Create a new guest object with the given name and generated ID
