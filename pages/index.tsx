@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import firebase from '../firebase/clientApp';
 import GuestTableRow from '../components/GuestTableRow';
-
+import Login from './login';
 export default function Home() {
+
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [color, setColor] = useState('');
@@ -15,9 +16,15 @@ export default function Home() {
 
   useEffect(() => {
     const fetchGuests = async () => {
-      const guestsCollection = await firebase.firestore().collection('guests').get();
-      const guestList = guestsCollection.docs.map((doc: any) => ({ id: doc.id, ...doc.data(), timestamp: doc.data().timestamp.toDate() }));
+      try {
+        const guestsCollection = await firebase.firestore().collection('guests').get();
+        const guestList = guestsCollection.docs.map((doc: any) => ({ id: doc.id, ...doc.data(), timestamp: doc.data().timestamp.toDate() }));
       setGuests(guestList);
+      } catch(err) {
+        alert(err.message);
+      }
+      
+      
     };
     fetchGuests();
   }, []);
@@ -87,7 +94,10 @@ function onDelete(guestKey) {
   
   return (
     <div>
-      <div className="bg-gray-200 h-24"></div>
+   
+   <div className="bg-gray-200 h-14"></div>
+      <Login></Login>{  }
+      <div className="bg-gray-200 h-10"></div>
     <div className="bg-gray-200 flex justify-center items-center">
       <div className="max-w-lg w-full bg-white p-6 rounded-lg">
         <h1 className="text-2xl font-bold mb-4">Test. Mark. Protect. Guest Log</h1>
