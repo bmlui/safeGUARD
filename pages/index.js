@@ -18,7 +18,7 @@ export default function Home() {
     const fetchGuests = async () => {
       try {
         const guestsCollection = await firebase.firestore().collection('guests').get();
-        const guestList = guestsCollection.docs.map((doc: any) => ({ id: doc.id, ...doc.data(), timestamp: doc.data().timestamp.toDate() }));
+        const guestList = guestsCollection.docs.map((doc) => ({ id: doc.id, ...doc.data(), timestamp: doc.data().timestamp.toDate() }));
       setGuests(guestList);
       } catch(err) {
         alert(err.message);
@@ -44,7 +44,7 @@ export default function Home() {
     setGuests((prevGuests) => [newGuest,...prevGuests]);
   }
   
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const colorOptions = ["green", "yellow", "red"];
