@@ -19,7 +19,7 @@ export default function GuestTableRow({ guest }: GuestTableRowProps) {
     let guestKey: string = guest.firstName + ' ' + guest.lastName;
     guestKey = guestKey.toUpperCase();
 
-    if (window.confirm('Are you sure you want to delete this guest?')) {
+    if (window.confirm('Are you sure you want to delete ' + guestKey + "?")) {
       firebase.firestore().collection('guests').doc(guestKey).delete();
       setDeleted(true);
     }
@@ -43,7 +43,7 @@ export default function GuestTableRow({ guest }: GuestTableRowProps) {
         </span>
       </td>
       <td>{guest.timestamp.toDateString()}</td>
-      <td>{guest.staffName}</td>
+      <td className="uppercase">{guest.staffName}</td>
       <td>
         <button 
           onClick={handleDelete}

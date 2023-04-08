@@ -57,16 +57,14 @@ export default function Home() {
     return;
   }
   
-setFirstName(firstName.toUpperCase);
-setLastName(lastName.toUpperCase);
 
     let guestKey = firstName + ' ' + lastName;
+    guestKey = guestKey.toUpperCase();
 
     const doctest = firebase.firestore().collection('guests').doc(guestKey);
     const doc = await doctest.get();
     if (!doc.exists) {
       const timestamp = new Date();
-    
       await firebase.firestore().collection('guests').doc(guestKey).set({ firstName, lastName, color, timestamp, staffName});
       addGuest(firstName, lastName, color, timestamp, staffName);
     } else {
@@ -104,7 +102,7 @@ return;
             <input
               type="text"
               id="firstName"
-              required pattern="[A-Za-z]{1,20}"
+              required pattern="[A-Za-z]{1,32}"
               className="border border-gray-300 rounded px-3 py-2"
               value={firstName}
               onChange={(event) => setFirstName(event.target.value)}
@@ -117,7 +115,7 @@ return;
             <input
               type="text"
               id="lastName"
-              required pattern="[A-Za-z]{1,25}"
+              required pattern="[A-Za-z]{1,32}"
               className="border border-gray-300 rounded px-3 py-2"
               value={lastName}
               onChange={(event) => setLastName(event.target.value)}
@@ -146,7 +144,7 @@ return;
             <input
               type="text"
               id="staffName"
-              required pattern="{1,40}"
+              required pattern="{[a-zA-Z ]1,40}"
               className="border border-gray-300 rounded px-3 py-2"
               value={staffName}
               onChange={(event) => setStaffName(event.target.value)}
