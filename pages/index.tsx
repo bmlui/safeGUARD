@@ -11,6 +11,7 @@ export default function Home() {
 
   const [guests, setGuests] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+ 
 
   useEffect(() => {
     const fetchGuests = async () => {
@@ -18,7 +19,6 @@ export default function Home() {
       const guestList = guestsCollection.docs.map((doc: any) => ({ id: doc.id, ...doc.data(), timestamp: doc.data().timestamp.toDate() }));
       setGuests(guestList);
     };
-
     fetchGuests();
   }, []);
 
@@ -27,7 +27,16 @@ export default function Home() {
     guest.lastName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-
+  function addGuest(firstName:String, lastName:String, color:String, timestamp:Date, staffName:String) {
+    // Generate a unique ID for the new guest
+  
+    // Create a new guest object with the given name and generated ID
+    const newGuest = { firstName, lastName, color, timestamp, staffName };
+  
+    // Add the new guest to the list of guests
+    setGuests((prevGuests) => [newGuest,...prevGuests]);
+  }
+  
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -52,6 +61,7 @@ export default function Home() {
     if (!doc.exists) {
       const timestamp = new Date();
       await firebase.firestore().collection('guests').doc(guestKey).set({ firstName, lastName, color, timestamp, staffName});
+      addGuest(firstName, lastName, color, timestamp, staffName);
     } else {
       setFirstName('');
       setLastName('');
@@ -65,10 +75,13 @@ export default function Home() {
     setLastName('');
     setColor('');
     setStaffName("");
-    alert(guestKey + " has been added to the list.");
+   // alert(guestKey + " has been added to the list.");
+return;
   };
 
-
+function onDelete(guestKey) {
+  firebase.firestore().collection('guests').doc(guestKey).delete()
+}
 
   
   
@@ -77,7 +90,7 @@ export default function Home() {
       <div className="bg-gray-200 h-24"></div>
     <div className="bg-gray-200 flex justify-center items-center">
       <div className="max-w-lg w-full bg-white p-6 rounded-lg">
-        <h1 className="text-2xl font-bold mb-4">Guest List</h1>
+        <h1 className="text-2xl font-bold mb-4">Test. Mark. Protect. Guest Log</h1>
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col mb-4">
             <label htmlFor="firstName" className="mb-1 font-semibold">
@@ -142,7 +155,7 @@ export default function Home() {
     </div>
 
     <div className="bg-gray-200 h-10"></div>
-     <div className="bg-gray-200  flex justify-center items-center">
+     <div className="bg-gray-200 pb-100 flex justify-center items-center">
      <div className="max-w-2xl w-full bg-white p-6 rounded-lg">
        <input
          type="text"
@@ -159,7 +172,6 @@ export default function Home() {
              <th className="px-4 py-2">Color</th>
              <th className="px-4 py-2">Date</th>
              <th className="px-4 py-2">Staff</th>
-             
            </tr>
          </thead>
          <tbody>
