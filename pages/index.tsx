@@ -68,9 +68,6 @@ export default function Home() {
       await firebase.firestore().collection('guests').doc(guestKey).set({ firstName, lastName, color, timestamp, staffName});
       addGuest(firstName, lastName, color, timestamp, staffName);
     } else {
-      setFirstName('');
-      setLastName('');
-      setColor('');
       alert('Guest ' + guestKey + ' already exists!');
       return;
     }
@@ -78,8 +75,6 @@ export default function Home() {
     // Clear form inputs
     setFirstName('');
     setLastName('');
-    setColor('');
-    setStaffName("");
    // alert(guestKey + " has been added to the list.");
 return;
   };
