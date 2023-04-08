@@ -29,10 +29,10 @@ export default function Home() {
     fetchGuests();
   }, []);
 
-  const filteredGuests:Array<any> = guests.filter((guest) =>
-    guest.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    guest.lastName.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // const filteredGuests:Array<any> = guests.filter((guest) =>
+  //   guest.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //   guest.lastName.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
 
   function addGuest(firstName:string ,lastName:string , color:string , timestamp:Date , staffName:string) {
     // Generate a unique ID for the new guest
@@ -40,7 +40,7 @@ export default function Home() {
     // Create a new guest object with the given name and generated ID
     const newGuest:any = { firstName, lastName, color, timestamp, staffName };
     // Add the new guest to the list of guests
-    setGuests((prevGuests) => [newGuest,...prevGuests]);
+   // setGuests((prevGuests) => [newGuest,...prevGuests]);
   }
   
   const handleSubmit = async (event:any) => {
