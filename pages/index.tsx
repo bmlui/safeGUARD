@@ -29,7 +29,7 @@ export default function Home() {
     fetchGuests();
   }, []);
 
-  const filteredGuests = guests.filter((guest) =>
+  const filteredGuests:Array<any> = guests.filter((guest) =>
     guest.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
     guest.lastName.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -57,15 +57,16 @@ export default function Home() {
     return;
   }
   
-    
+setFirstName(firstName.toUpperCase);
+setLastName(lastName.toUpperCase);
 
     let guestKey = firstName + ' ' + lastName;
-    guestKey = guestKey.toUpperCase();
 
     const doctest = firebase.firestore().collection('guests').doc(guestKey);
     const doc = await doctest.get();
     if (!doc.exists) {
       const timestamp = new Date();
+    
       await firebase.firestore().collection('guests').doc(guestKey).set({ firstName, lastName, color, timestamp, staffName});
       addGuest(firstName, lastName, color, timestamp, staffName);
     } else {
@@ -84,11 +85,6 @@ export default function Home() {
    // alert(guestKey + " has been added to the list.");
 return;
   };
-
-function onDelete(guestKey: string) {
-  firebase.firestore().collection('guests').doc(guestKey).delete()
-}
-
   
   
   return (
@@ -121,7 +117,7 @@ function onDelete(guestKey: string) {
             <input
               type="text"
               id="lastName"
-              required pattern="[A-Za-z]{1,20}"
+              required pattern="[A-Za-z]{1,25}"
               className="border border-gray-300 rounded px-3 py-2"
               value={lastName}
               onChange={(event) => setLastName(event.target.value)}

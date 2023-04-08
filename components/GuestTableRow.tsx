@@ -9,10 +9,10 @@ interface GuestTableRowProps {
     timestamp: Date;
     staffName: string;
   };
-  onDelete: (id: string) => void;
+  //onDelete: (id: string) => void;
 }
 
-export default function GuestTableRow({ guest, onDelete }: GuestTableRowProps) {
+export default function GuestTableRow({ guest }: GuestTableRowProps) {
   const [deleted, setDeleted] = useState(false);
 
   const handleDelete = () => {
@@ -22,14 +22,13 @@ export default function GuestTableRow({ guest, onDelete }: GuestTableRowProps) {
     if (window.confirm('Are you sure you want to delete this guest?')) {
       firebase.firestore().collection('guests').doc(guestKey).delete();
       setDeleted(true);
-      firebase.firestore().collection('guests').doc(guestKey).delete();
     }
   };
 
   return (
     <tr className={deleted ? 'text-gray-400 line-through' : ''}>
-      <td>{guest.firstName}</td>
-      <td>{guest.lastName}</td>
+      <td className="uppercase">{guest.firstName}</td>
+      <td className="uppercase">{guest.lastName}</td>
       <td>
         <span
           className={`px-2 py-1 rounded-lg font-bold text-white ${
