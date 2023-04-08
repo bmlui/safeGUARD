@@ -4,13 +4,13 @@ import GuestTableRow from '../components/GuestTableRow';
 import Login from './login';
 export default function Home() {
 
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [firstName, setFirstName] = useState<string>('');
+  const [lastName, setLastName] = useState<string>('');
   const [color, setColor] = useState('');
-  const [staffName, setStaffName] = useState('');
+  const [staffName, setStaffName] = useState<string>('');
 
 
-  const [guests, setGuests] = useState([]);
+  const [guests, setGuests] = useState<[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
  
 
@@ -18,9 +18,9 @@ export default function Home() {
     const fetchGuests = async () => {
       try {
         const guestsCollection = await firebase.firestore().collection('guests').get();
-        const guestList = guestsCollection.docs.map((doc) => ({ id: doc.id, ...doc.data(), timestamp: doc.data().timestamp.toDate() }));
+        const guestList: any= guestsCollection.docs.map((doc) => ({ id: doc.id, ...doc.data(), timestamp: doc.data().timestamp.toDate() }));
       setGuests(guestList);
-      } catch(err) {
+      } catch(err:any) {
         alert(err.message);
       }
       
@@ -34,17 +34,16 @@ export default function Home() {
     guest.lastName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  function addGuest(firstName,lastName, color, timestamp, staffName) {
+  function addGuest(firstName:string ,lastName:string , color:string , timestamp:Date , staffName:string) {
     // Generate a unique ID for the new guest
   
     // Create a new guest object with the given name and generated ID
-    const newGuest = { firstName, lastName, color, timestamp, staffName };
-  
+    const newGuest:any = { firstName, lastName, color, timestamp, staffName };
     // Add the new guest to the list of guests
     setGuests((prevGuests) => [newGuest,...prevGuests]);
   }
   
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event:any) => {
     event.preventDefault();
 
     const colorOptions = ["green", "yellow", "red"];
@@ -86,7 +85,7 @@ export default function Home() {
 return;
   };
 
-function onDelete(guestKey) {
+function onDelete(guestKey: string) {
   firebase.firestore().collection('guests').doc(guestKey).delete()
 }
 
