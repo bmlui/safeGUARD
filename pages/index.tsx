@@ -173,9 +173,9 @@ return;
            </tr>
          </thead>
          <tbody>
-           {filteredGuests.map((guest) => (
+           {/* {filteredGuests.map((guest) => (
              <GuestTableRow key={guest.id} guest={guest} />
-           ))}
+           ))} */}
          </tbody>
        </table>
      </div>
