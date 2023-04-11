@@ -159,7 +159,7 @@ return;
 
     <div className="bg-gray-200 h-10"></div>
      <div className="bg-gray-200 pb-100 flex justify-center items-center">
-     <div className="max-w-2xl w-full bg-white p-6 rounded-lg">
+     <div className="max-w-3xl w-full bg-white p-6 rounded-lg">
        <input
          type="text"
          placeholder="Search by name..."
@@ -167,9 +167,9 @@ return;
          value={searchTerm}
          onChange={(event) => setSearchTerm(event.target.value)}
        />
-       <table className="table-auto w-full">
+       <table className="table-auto min-w-full divide-y divide-gray-200">
          <thead>
-           <tr>
+           <tr className="hidden md:table-row">
              <th className="px-4 py-2">First</th>
              <th className="px-4 py-2">Last</th>
              <th className="px-4 py-2">Color</th>
