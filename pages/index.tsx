@@ -1,16 +1,17 @@
+// @ts-nocheck
 import React, { useEffect, useState } from 'react';
 import firebase from '../firebase/clientApp';
 import GuestTableRow from '../components/GuestTableRow';
 import Login from './login';
 export default function Home() {
 
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [firstName, setFirstName] = useState<string>('');
+  const [lastName, setLastName] = useState<string>('');
   const [color, setColor] = useState('');
-  const [staffName, setStaffName] = useState('');
+  const [staffName, setStaffName] = useState<string>('');
 
 
-  const [guests, setGuests] = useState([]);
+  const [guests, setGuests] = useState<[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
  
 
@@ -18,9 +19,9 @@ export default function Home() {
     const fetchGuests = async () => {
       try {
         const guestsCollection = await firebase.firestore().collection('guests').get();
-        const guestList = guestsCollection.docs.map((doc: any) => ({ id: doc.id, ...doc.data(), timestamp: doc.data().timestamp.toDate() }));
+        const guestList: any= guestsCollection.docs.map((doc) => ({ id: doc.id, ...doc.data(), timestamp: doc.data().timestamp.toDate() }));
       setGuests(guestList);
-      } catch(err) {
+      } catch(err:any) {
         alert(err.message);
       }
       
@@ -29,22 +30,21 @@ export default function Home() {
     fetchGuests();
   }, []);
 
-  const filteredGuests = guests.filter((guest) =>
+  const filteredGuests:Array<any> = guests.filter((guest) =>
     guest.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
     guest.lastName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  function addGuest(firstName:String, lastName:String, color:String, timestamp:Date, staffName:String) {
+  function addGuest(firstName:string ,lastName:string , color:string , timestamp:Date , staffName:string) {
     // Generate a unique ID for the new guest
   
     // Create a new guest object with the given name and generated ID
-    const newGuest = { firstName, lastName, color, timestamp, staffName };
-  
+    const newGuest:any = { firstName, lastName, color, timestamp, staffName };
     // Add the new guest to the list of guests
     setGuests((prevGuests) => [newGuest,...prevGuests]);
   }
   
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event:any) => {
     event.preventDefault();
 
     const colorOptions = ["green", "yellow", "red"];
@@ -58,7 +58,6 @@ export default function Home() {
     return;
   }
   
-    
 
     let guestKey = firstName + ' ' + lastName;
     guestKey = guestKey.toUpperCase();
@@ -70,9 +69,6 @@ export default function Home() {
       await firebase.firestore().collection('guests').doc(guestKey).set({ firstName, lastName, color, timestamp, staffName});
       addGuest(firstName, lastName, color, timestamp, staffName);
     } else {
-      setFirstName('');
-      setLastName('');
-      setColor('');
       alert('Guest ' + guestKey + ' already exists!');
       return;
     }
@@ -80,16 +76,9 @@ export default function Home() {
     // Clear form inputs
     setFirstName('');
     setLastName('');
-    setColor('');
-    setStaffName("");
    // alert(guestKey + " has been added to the list.");
 return;
   };
-
-function onDelete(guestKey) {
-  firebase.firestore().collection('guests').doc(guestKey).delete()
-}
-
   
   
   return (
@@ -109,7 +98,7 @@ function onDelete(guestKey) {
             <input
               type="text"
               id="firstName"
-              required pattern="[A-Za-z]{1,20}"
+              required pattern="[A-Za-z]{1,32}"
               className="border border-gray-300 rounded px-3 py-2"
               value={firstName}
               onChange={(event) => setFirstName(event.target.value)}
@@ -122,7 +111,7 @@ function onDelete(guestKey) {
             <input
               type="text"
               id="lastName"
-              required pattern="[A-Za-z]{1,20}"
+              required pattern="[A-Za-z]{1,32}"
               className="border border-gray-300 rounded px-3 py-2"
               value={lastName}
               onChange={(event) => setLastName(event.target.value)}
@@ -151,7 +140,7 @@ function onDelete(guestKey) {
             <input
               type="text"
               id="staffName"
-              required pattern="{1,40}"
+              required pattern="{[a-zA-Z ]1,40}"
               className="border border-gray-300 rounded px-3 py-2"
               value={staffName}
               onChange={(event) => setStaffName(event.target.value)}

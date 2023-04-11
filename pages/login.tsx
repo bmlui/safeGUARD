@@ -4,7 +4,7 @@ import { Router } from 'next/router';
 
 export default function Auth() {
   
-const [user, setUser] = useState(null);
+const [user, setUser] = useState<any | null>(null);
 
 useEffect(() => {
   const unsubscribe = firebase.auth().onAuthStateChanged(user => {

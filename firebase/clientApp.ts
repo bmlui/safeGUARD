@@ -1,4 +1,4 @@
-import firebase from 'firebase/compat/app';
+import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 
@@ -12,6 +12,7 @@ const clientCredentials = {
 };
 if (!firebase.apps.length) {
   const app = firebase.initializeApp(clientCredentials);
+
 
 }
 
