@@ -36,7 +36,7 @@ export default function GuestTableRow({ guest }: GuestTableRowProps) {
       <td className="hidden md:table-cell">{guest.lastName}</td>
       <td>
         <span
-          className={`hidden md:table-cell px-2 py-1 rounded-lg font-bold text-white ${
+          className={`hidden md:table-cell px-2 py-1 rounded-lg font-bold ${
             guest.color === 'green'
               ? 'bg-emerald-100/60 text-emerald-500'
               : guest.color === 'yellow'
@@ -64,7 +64,7 @@ export default function GuestTableRow({ guest }: GuestTableRowProps) {
     <div className="flex items-center space-x-2 text-sm">
       <div className='font-bold text-base'>{guest.firstName} {guest.lastName}</div>
       <div
-          className={`md:hidden px-2 py-1 rounded-lg font-semibold text-white ${
+          className={`md:hidden px-2 py-1 rounded-lg font-semibold  ${
             guest.color === 'green'
               ? 'bg-emerald-100/60 text-emerald-500'
               : guest.color === 'yellow'
