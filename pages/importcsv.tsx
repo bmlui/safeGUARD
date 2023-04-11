@@ -1,7 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
 import firebase from '../firebase/clientApp';
-import GuestTableRow from '../components/GuestTableRow';
 import Login from '../components/login';
 
 
