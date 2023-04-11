@@ -2,7 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import firebase from '../firebase/clientApp';
 import GuestTableRow from '../components/GuestTableRow';
-import Login from './login';
+import Login from '../components/login';
+
+
+
 export default function Home() {
 
   const [firstName, setFirstName] = useState<string>('');
@@ -22,7 +25,7 @@ export default function Home() {
         const guestList: any= guestsCollection.docs.map((doc) => ({ id: doc.id, ...doc.data(), timestamp: doc.data().timestamp.toDate() }));
       setGuests(guestList);
       } catch(err:any) {
-        alert(err.message);
+        alert(err)
       }
       
       
@@ -35,13 +38,14 @@ export default function Home() {
     guest.lastName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  function addGuest(firstName:string ,lastName:string , color:string , timestamp:Date , staffName:string) {
+  function addGuest(id:string, firstName:string ,lastName:string , color:string , timestamp:Date , staffName:string) {
     // Generate a unique ID for the new guest
-  
+    // let id:string = firstName + ' ' + lastName;
+    // id = id.toUpperCase();
     // Create a new guest object with the given name and generated ID
-    const newGuest:any = { firstName, lastName, color, timestamp, staffName };
+    const newGuest:any = { id, firstName, lastName, color, timestamp, staffName };
     // Add the new guest to the list of guests
-    setGuests((prevGuests) => [newGuest,...prevGuests]);
+    setGuests(prevGuests => [newGuest, ...prevGuests]);
   }
   
   const handleSubmit = async (event:any) => {
@@ -59,7 +63,7 @@ export default function Home() {
   }
   
 
-    let guestKey = firstName + ' ' + lastName;
+    let guestKey:string = firstName + ' ' + lastName;
     guestKey = guestKey.toUpperCase();
 
     const doctest = firebase.firestore().collection('guests').doc(guestKey);
@@ -67,7 +71,7 @@ export default function Home() {
     if (!doc.exists) {
       const timestamp = new Date();
       await firebase.firestore().collection('guests').doc(guestKey).set({ firstName, lastName, color, timestamp, staffName});
-      addGuest(firstName, lastName, color, timestamp, staffName);
+      addGuest( guestKey, firstName, lastName, color, timestamp, staffName);
     } else {
       alert('Guest ' + guestKey + ' already exists!');
       return;
