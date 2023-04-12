@@ -79,7 +79,7 @@ export default function GuestTableRow({ guest }: GuestTableRowProps) {
           Delete
         </button>
       </td >
-      <td className="md:hidden text-sm" id="mobiletable">
+      <td className="md:hidden text-sm cursor-pointer" id="mobiletable">
       <div className="grid grid-cols-1 gap-4 block"> <a onClick={deleted ?  nothing : handleDelete}>
     <div className="bg-white space-y-2 p-2 m-2 rounded shadow">
     <div className="flex items-center space-x-2 text-sm">
