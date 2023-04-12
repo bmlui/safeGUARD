@@ -120,7 +120,7 @@ export default function Home() {
             <input
               type="text"
               id="firstName"
-              required pattern="[A-Za-z.-' ]{1,32}"
+              required pattern="[A-Za-z-' ]{1,32}"
               className="border border-gray-300 rounded px-3 py-2"
               value={firstName}
               onChange={(event) => setFirstName(event.target.value)}
@@ -133,7 +133,7 @@ export default function Home() {
             <input
               type="text"
               id="lastName"
-              required pattern="[A-Za-z.-' ]{1,32}"
+              required pattern="[A-Za-z-' ]{1,32}"
               className="border border-gray-300 rounded px-3 py-2"
               value={lastName}
               onChange={(event) => setLastName(event.target.value)}
@@ -162,7 +162,7 @@ export default function Home() {
             <input
               type="text"
               id="staffName"
-              required pattern="{[a-zA-Z.-' ]1,40}"
+              required pattern="[a-zA-Z-' ]{1,40}"
               className="border border-gray-300 rounded px-3 py-2"
               value={staffName}
               onChange={(event) => setStaffName(event.target.value)}
