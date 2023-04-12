@@ -1,47 +1,8 @@
 // @ts-nocheck
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import firebase from '../firebase/clientApp';
 import GuestTableRow from '../components/GuestTableRow';
 import Login from '../components/login';
-
-const db = firebase.database();
-  const guestsRef = db.ref('guests');
-  const connectedRef = db.ref('.info/connected');
-  
-  function useGuestList() {
-  const [guests, setGuests] = useState([]);
-  useEffect(() => {
-  guestsRef.on('value', (snapshot) => {
-  const guestList = [];
-  snapshot.forEach((childSnapshot) => {
-  const id = childSnapshot.key;
-  const data = childSnapshot.val();
-  const timestamp = new Date(data.timestamp);
-  guestList.push({ id, ...data, timestamp });
-  });
-  setGuests(guestList);
-  });
-  return () => {
-  guestsRef.off();
-  };
-  }, []);
-  return guests;
-  }
-  
-  function useIsConnected() {
-  const [isConnected, setIsConnected] = useState(true);
-  useEffect(() => {
-  connectedRef.on('value', (snapshot) => {
-  setIsConnected(!!snapshot.val());
-  });
-  return () => {
-  connectedRef.off();
-  };
-  }, []);
-  return isConnected;
-  }
-  
-  
 
 export default function Home() {
 
@@ -49,21 +10,51 @@ export default function Home() {
   const [lastName, setLastName] = useState<string>('');
   const [color, setColor] = useState('');
   const [staffName, setStaffName] = useState<string>('');
+
+
+  const [guests, setGuests] = useState<[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const guests = useGuestList();
-    const isConnected = useIsConnected();
+  let disconected = false;
+ 
+  firebase.database().ref('.info/connected').on('value', function(snapshot) {
+    if (snapshot.val() === false) {
+      disconected = true;
+    } else {
+      disconected = false;
+    }
+  });
+  
 
-    const filteredGuests = useMemo(() => guests.filter((guest) =>
+  useEffect(() => {
+    const fetchGuests = async () => {
+      try {
+        firebase.database().ref('guests').on('value', (snapshot) => {
+          const guestList: any = [];
+          snapshot.forEach((childSnapshot) => {
+            const id = childSnapshot.key;
+            const data = childSnapshot.val();
+            const timestamp = new Date(data.timestamp);
+            guestList.push({ id, ...data, timestamp });
+          });
+          setGuests(guestList);
+        });
+      } catch(err:any) {
+        alert(err)
+      }
+    };
+    fetchGuests();
+  }, []);
+
+  const filteredGuests:Array<any> = guests.filter((guest) =>
     guest.id.toLowerCase().replace(/[^A-Za-z]/g, '').includes(searchTerm.toLowerCase().replace(/[^A-Za-z]/g, ''))
-    ), [guests, searchTerm]);
+  );
 
 
 
-  const handleSubmit = useCallback(
-    async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event:any) => {
     event.preventDefault();
-    if (!isConnected) {
+    if (disconected) {
       alert('You are not connected to the internet. Please connect to the internet and try again.');
       return;
     } 
@@ -109,7 +100,7 @@ export default function Home() {
     setLastName('');
     // alert(guestKey + " has been added to the list.");
     return;
-  });
+  };
   
   
   return (
