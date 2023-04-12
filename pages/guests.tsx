@@ -10,6 +10,7 @@ const db = firebase.database();
   
   function useGuestList() {
     const [guests, setGuests] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
   
     useEffect(() => {
       guestsRef.on('value', (snapshot) => {
@@ -21,6 +22,7 @@ const db = firebase.database();
           guestList.push({ id, ...data, timestamp });
         });
         setGuests(guestList);
+        setIsLoading(false);
       });
   
       return () => {
@@ -28,7 +30,7 @@ const db = firebase.database();
       };
     }, [guestsRef]);
   
-    return { guests };
+    return { guests, isLoading };
   }
   function useIsConnected() {
   const [isConnected, setIsConnected] = useState(true);
@@ -54,7 +56,7 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState('');
 
     const isConnected = useIsConnected();
-    const guests = useGuestList();
+    const { guests, isLoading } = useGuestList();
    
 
     const filteredGuests = useMemo(() => guests.filter(({ id }) =>
