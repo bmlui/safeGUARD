@@ -4,8 +4,6 @@ import firebase from '../firebase/clientApp';
 import GuestTableRow from '../components/GuestTableRow';
 import Login from '../components/login';
 
-
-
 export default function Home() {
 
   const [firstName, setFirstName] = useState<string>('');
@@ -16,19 +14,34 @@ export default function Home() {
 
   const [guests, setGuests] = useState<[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+
+  let disconected = false;
  
+  firebase.database().ref('.info/connected').on('value', function(snapshot) {
+    if (snapshot.val() === false) {
+      disconected = true;
+    } else {
+      disconected = false;
+    }
+  });
+  
 
   useEffect(() => {
     const fetchGuests = async () => {
       try {
-        const guestsCollection = await firebase.firestore().collection('guests').get();
-        const guestList: any= guestsCollection.docs.map((doc) => ({ id: doc.id, ...doc.data(), timestamp: doc.data().timestamp.toDate() }));
-      setGuests(guestList);
+        firebase.database().ref('guests').on('value', (snapshot) => {
+          const guestList: any = [];
+          snapshot.forEach((childSnapshot) => {
+            const id = childSnapshot.key;
+            const data = childSnapshot.val();
+            const timestamp = new Date(data.timestamp);
+            guestList.push({ id, ...data, timestamp });
+          });
+          setGuests(guestList);
+        });
       } catch(err:any) {
         alert(err)
       }
-      
-      
     };
     fetchGuests();
   }, []);
@@ -38,16 +51,8 @@ export default function Home() {
     guest.lastName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  function addGuest(id:string, firstName:string ,lastName:string , color:string , timestamp:Date , staffName:string) {
-    // Generate a unique ID for the new guest
-    // let id:string = firstName + ' ' + lastName;
-    // id = id.toUpperCase();
-    // Create a new guest object with the given name and generated ID
-    const newGuest:any = { id, firstName, lastName, color, timestamp, staffName };
-    // Add the new guest to the list of guests
-    setGuests(prevGuests => [newGuest, ...prevGuests]);
-  }
-  
+
+
   const handleSubmit = async (event:any) => {
     event.preventDefault();
 
@@ -57,21 +62,30 @@ export default function Home() {
       return;
     }
 
-  if (firstName.includes(" ") || lastName.includes(" ")) {
-    alert('Guest first and last names cannot include spaces.');
-    return;
-  }
-  
+    if (firstName.includes(" ") || lastName.includes(" ")) {
+      alert('Guest first and last names cannot include spaces.');
+      return;
+    }
 
     let guestKey:string = firstName + ' ' + lastName;
     guestKey = guestKey.toUpperCase();
 
-    const doctest = firebase.firestore().collection('guests').doc(guestKey);
-    const doc = await doctest.get();
-    if (!doc.exists) {
+     if (disconected) {
+      alert('You are not connected to the internet. Please connect to the internet and try again.');
+      return;
+    } 
+
+    const doctest = firebase.database().ref('guests/' + guestKey);
+    const snapshot = await doctest.once('value');
+    if (!snapshot.exists()) {
       const timestamp = new Date();
-      await firebase.firestore().collection('guests').doc(guestKey).set({ firstName, lastName, color, timestamp, staffName});
-      addGuest( guestKey, firstName, lastName, color, timestamp, staffName);
+      let newGuest = { firstName, lastName, color, timestamp: timestamp.getTime(), staffName };
+      try {
+        await firebase.database().ref('guests/' + guestKey).set(newGuest);
+      }
+      catch(err:any) {
+        alert(err);
+      }
     } else {
       alert('Guest ' + guestKey + ' already exists!');
       return;
@@ -80,8 +94,8 @@ export default function Home() {
     // Clear form inputs
     setFirstName('');
     setLastName('');
-   // alert(guestKey + " has been added to the list.");
-return;
+    // alert(guestKey + " has been added to the list.");
+    return;
   };
   
   

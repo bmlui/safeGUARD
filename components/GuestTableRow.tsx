@@ -15,14 +15,35 @@ interface GuestTableRowProps {
 
 export default function GuestTableRow({ guest }: GuestTableRowProps) {
   const [deleted, setDeleted] = useState(false);
+  let disconected = false;
+
+  firebase.database().ref('.info/connected').on('value', function(snapshot) {
+    if (snapshot.val() === false) {
+      disconected = true;
+    } else {
+      disconected = false;
+    }
+  });
 
   const handleDelete = () => {
     let guestKey: string = guest.firstName + ' ' + guest.lastName;
     guestKey = guestKey.toUpperCase();
-
+  
     if (window.confirm('Are you sure you want to delete ' + guestKey + "?")) {
-      firebase.firestore().collection('guests').doc(guestKey).delete();
-      setDeleted(true);
+
+      if (disconected) {
+        alert("You are not connected to the internet. Please connect to the internet and try again.");
+        return;
+      }
+      const guestRef = firebase.database().ref('guests/' + guestKey);
+      guestRef.remove()
+        .then(() => {
+          setDeleted(true);
+        })
+        .catch((error: any) => {
+          console.error('Error removing guest:', error);
+          alert('Error removing guest: ' + error);
+        });
     }
   };
 
@@ -48,7 +69,7 @@ export default function GuestTableRow({ guest }: GuestTableRowProps) {
         </span>
       </td>
       <td className="hidden md:table-cell text-gray-500 whitespace-nowrap">{guest.timestamp.toLocaleDateString('en-US')}</td>
-      <td className="hidden md:table-cell uppercase whitespace-nowrap">{guest.staffName}</td>
+      <td className="hidden md:table-cell whitespace-nowrap">{guest.staffName}</td>
       <td className="hidden md:table-cell">
         <button 
           onClick={handleDelete}
