@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 
 interface GuestTableRowProps {
   guest: {
+    id: string;
     firstName: string;
     lastName: string;
     color: string;
@@ -26,9 +27,8 @@ export default function GuestTableRow({ guest }: GuestTableRowProps) {
   });
 
   const handleDelete = () => {
-    let guestKey: string = guest.firstName + ' ' + guest.lastName;
-    guestKey = guestKey.toUpperCase();
-  
+    let guestKey: string = guest.id;
+
     if (window.confirm('Are you sure you want to delete ' + guestKey + "?")) {
 
       if (disconected) {

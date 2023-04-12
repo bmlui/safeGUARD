@@ -47,41 +47,51 @@ export default function Home() {
   }, []);
 
   const filteredGuests:Array<any> = guests.filter((guest) =>
-    guest.id.toLowerCase().includes(searchTerm.toLowerCase().replace(/[^A-Za-z ]/g, ''))
+    guest.id.toLowerCase().replace(/[^A-Za-z]/g, '').includes(searchTerm.toLowerCase().replace(/[^A-Za-z]/g, ''))
   );
 
 
 
   const handleSubmit = async (event:any) => {
     event.preventDefault();
+    if (disconected) {
+      alert('You are not connected to the internet. Please connect to the internet and try again.');
+      return;
+    } 
 
     const colorOptions = ["green", "yellow", "red"];
     if (!colorOptions.includes(color)) {
       alert('Please select a valid color');
       return;
     }
-
-    let guestKey:string = firstName + ' ' + lastName;
-    guestKey = guestKey.toUpperCase();
-
-     if (disconected) {
-      alert('You are not connected to the internet. Please connect to the internet and try again.');
+    let correctedFirstName = (firstName.replace(/[^A-Za-z]/g, ''));
+    let correctedLastName = (lastName.replace(/[^A-Za-z]/g, ''));
+    if (correctedFirstName === '' || correctedLastName === '') {
+      alert('Please enter a valid first and last name');
       return;
-    } 
+    }
+    let corrrectedStaffName =  (staffName.replace(/[^A-Za-z ]/g, ''));
+    if (corrrectedStaffName.replace(/[^A-Za-z]/g, '') === '') {
+      alert('Please enter a valid staff name');
+      return;
+    }
 
-    const doctest = firebase.database().ref('guests/' + guestKey);
+
+    let guestID:string = correctedFirstName + ' ' + correctedLastName;
+    guestID = guestID.toUpperCase();
+    const doctest = firebase.database().ref('guests/' + guestID);
     const snapshot = await doctest.once('value');
     if (!snapshot.exists()) {
       const timestamp = new Date();
-      let newGuest = { firstName, lastName, color, timestamp: timestamp.getTime(), staffName };
+      let newGuest = { firstName: correctedFirstName, lastName: correctedLastName, color, timestamp: timestamp.getTime(), staffName:corrrectedStaffName };
       try {
-        await firebase.database().ref('guests/' + guestKey).set(newGuest);
+        await firebase.database().ref('guests/' + guestID).set(newGuest);
       }
       catch(err:any) {
         alert(err);
       }
     } else {
-      alert('Guest ' + guestKey + ' already exists!');
+      alert('Guest ' + guestID + ' already exists!');
       return;
     }
 
@@ -110,7 +120,7 @@ export default function Home() {
             <input
               type="text"
               id="firstName"
-              required pattern="[A-Za-z]{1,32}"
+              required pattern="[A-Za-z.-' ]{1,32}"
               className="border border-gray-300 rounded px-3 py-2"
               value={firstName}
               onChange={(event) => setFirstName(event.target.value)}
@@ -123,7 +133,7 @@ export default function Home() {
             <input
               type="text"
               id="lastName"
-              required pattern="[A-Za-z]{1,32}"
+              required pattern="[A-Za-z.-' ]{1,32}"
               className="border border-gray-300 rounded px-3 py-2"
               value={lastName}
               onChange={(event) => setLastName(event.target.value)}
@@ -152,7 +162,7 @@ export default function Home() {
             <input
               type="text"
               id="staffName"
-              required pattern="{[a-zA-Z ]1,40}"
+              required pattern="{[a-zA-Z.-' ]1,40}"
               className="border border-gray-300 rounded px-3 py-2"
               value={staffName}
               onChange={(event) => setStaffName(event.target.value)}
