@@ -47,8 +47,7 @@ export default function Home() {
   }, []);
 
   const filteredGuests:Array<any> = guests.filter((guest) =>
-    guest.firstName.toLowerCase().includes(searchTerm.toLowerCase().replace(/[^A-Za-z]/g, '')) ||
-    guest.lastName.toLowerCase().includes(searchTerm.toLowerCase().replace(/[^A-Za-z]/g, ''))
+    guest.id.toLowerCase().includes(searchTerm.toLowerCase().replace(/[^A-Za-z ]/g, ''))
   );
 
 
