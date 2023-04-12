@@ -9,30 +9,25 @@ const db = firebase.database();
   const connectedRef = db.ref('.info/connected');
   
   function useGuestList() {
-    const [guests, setGuests] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    
-  
-    useEffect(() => {
-      guestsRef.on('value', (snapshot) => {
-        const guestList = [];
-        snapshot.forEach((childSnapshot) => {
-          const id = childSnapshot.key;
-          const data = childSnapshot.val();
-          const timestamp:Date = new Date(data.timestamp);
-          guestList.push({ id, ...data, timestamp });
-        });
-        setGuests(guestList);
-        setIsLoading(false);
-      });
-  
-      return () => {
-        guestsRef.off();
-      };
-    }, [guestsRef]);
-  
-    return { guests, isLoading };
+  const [guests, setGuests] = useState([]);
+  useEffect(() => {
+  guestsRef.on('value', (snapshot) => {
+  const guestList = [];
+  snapshot.forEach((childSnapshot) => {
+  const id = childSnapshot.key;
+  const data = childSnapshot.val();
+  const timestamp = new Date(data.timestamp);
+  guestList.push({ id, ...data, timestamp });
+  });
+  setGuests(guestList);
+  });
+  return () => {
+  guestsRef.off();
+  };
+  }, []);
+  return guests;
   }
+  
   function useIsConnected() {
   const [isConnected, setIsConnected] = useState(true);
   useEffect(() => {
@@ -56,13 +51,13 @@ export default function Home() {
   const [staffName, setStaffName] = useState<string>('');
   const [searchTerm, setSearchTerm] = useState('');
 
+  const guests = useGuestList();
     const isConnected = useIsConnected();
-    const { guests, isLoading } = useGuestList();
-   
 
-    const filteredGuests = useMemo(() => guests.filter(({ id }) =>
-    id.toLowerCase().replace(/[^A-Za-z]/g, '').includes(searchTerm.toLowerCase().replace(/[^A-Za-z]/g, ''))
-  ), [guests, searchTerm]);
+    const filteredGuests = useMemo(() => guests.filter((guest) =>
+    guest.id.toLowerCase().replace(/[^A-Za-z]/g, '').includes(searchTerm.toLowerCase().replace(/[^A-Za-z]/g, ''))
+    ), [guests, searchTerm]);
+
 
 
   const handleSubmit = useCallback(
@@ -210,11 +205,7 @@ export default function Home() {
            </tr>
          </thead>
          <tbody>
-         
-           {isLoading ? (
-        <tr><td>Loading...</td></tr>
-      ) : 
-      filteredGuests.map((guest) => (
+           {filteredGuests.map((guest) => (
              <GuestTableRow key={guest.id} guest={guest} />
            ))}
          </tbody>
