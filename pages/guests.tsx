@@ -8,30 +8,7 @@ const db = firebase.database();
   const guestsRef = db.ref('guests');
   const connectedRef = db.ref('.info/connected');
   
-  function useGuestList() {
-    const [guests, setGuests] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-  
-    useEffect(() => {
-      guestsRef.on('value', (snapshot) => {
-        const guestList = [];
-        snapshot.forEach((childSnapshot) => {
-          const id = childSnapshot.key;
-          const data = childSnapshot.val();
-          const timestamp:Date = new Date(data.timestamp);
-          guestList.push({ id, ...data, timestamp });
-        });
-        setGuests(guestList);
-        setIsLoading(false);
-      });
-  
-      return () => {
-        guestsRef.off();
-      };
-    }, [guestsRef]);
-  
-    return { guests, isLoading };
-  }
+
   function useIsConnected() {
   const [isConnected, setIsConnected] = useState(true);
   useEffect(() => {
@@ -56,8 +33,26 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState('');
 
     const isConnected = useIsConnected();
-    const { guests, isLoading } = useGuestList();
-   
+   const [guests, setGuests] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+  
+    useEffect(() => {
+      guestsRef.on('value', (snapshot) => {
+        const guestList = [];
+        snapshot.forEach((childSnapshot) => {
+          const id = childSnapshot.key;
+          const data = childSnapshot.val();
+          const timestamp:Date = new Date(data.timestamp);
+          guestList.push({ id, ...data, timestamp });
+        });
+        setGuests(guestList);
+        setIsLoading(false);
+      });
+  
+      return () => {
+        guestsRef.off();
+      };
+    }, [guestsRef]);
 
     const filteredGuests = useMemo(() => guests.filter(({ id }) =>
     id.toLowerCase().replace(/[^A-Za-z]/g, '').includes(searchTerm.toLowerCase().replace(/[^A-Za-z]/g, ''))
