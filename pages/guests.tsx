@@ -11,7 +11,6 @@ const db = firebase.database();
   function useGuestList() {
     const [guests, setGuests] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    
   
     useEffect(() => {
       guestsRef.on('value', (snapshot) => {
