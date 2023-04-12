@@ -47,8 +47,8 @@ export default function Home() {
   }, []);
 
   const filteredGuests:Array<any> = guests.filter((guest) =>
-    guest.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    guest.lastName.toLowerCase().includes(searchTerm.toLowerCase())
+    guest.firstName.toLowerCase().includes(searchTerm.toLowerCase().replace(/[^A-Za-z]/g, '')) ||
+    guest.lastName.toLowerCase().includes(searchTerm.toLowerCase().replace(/[^A-Za-z]/g, ''))
   );
 
 
@@ -59,11 +59,6 @@ export default function Home() {
     const colorOptions = ["green", "yellow", "red"];
     if (!colorOptions.includes(color)) {
       alert('Please select a valid color');
-      return;
-    }
-
-    if (firstName.includes(" ") || lastName.includes(" ")) {
-      alert('Guest first and last names cannot include spaces.');
       return;
     }
 
