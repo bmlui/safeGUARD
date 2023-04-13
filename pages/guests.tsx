@@ -50,7 +50,9 @@ export default function Home() {
     guest.id.toLowerCase().replace(/[^A-Za-z]/g, '').includes(searchTerm.toLowerCase().replace(/[^A-Za-z]/g, ''))
   );
 
-
+const handleClearSearch = () => {
+    setSearchTerm('');
+  };
 
   const handleSubmit = async (event:any) => {
     event.preventDefault();
@@ -185,14 +187,16 @@ export default function Home() {
          value={searchTerm}
          onChange={(event) => setSearchTerm(event.target.value)}
        />
+       <button onClick={handleClearSearch} className="ml-4 bg-slate-400 text-white py-2 px-4 rounded hover:bg-slate-500">Clear</button>
        <table className="table-auto min-w-full divide-y divide-gray-200">
-         <thead>
+         <thead className="">
            <tr className="hidden md:table-row">
              <th className="px-4 py-2">First</th>
              <th className="px-4 py-2">Last</th>
              <th className="px-4 py-2">Color</th>
              <th className="px-4 py-2">Date</th>
              <th className="px-4 py-2">Staff</th>
+             <th className="px-4 py-2"></th>
            </tr>
          </thead>
          <tbody>

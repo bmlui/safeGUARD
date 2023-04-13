@@ -52,8 +52,8 @@ export default function GuestTableRow({ guest }: GuestTableRowProps) {
   }
   return (
 
-    <tr className={deleted ? 'text-gray-400 line-through' : ''}>
-      <td className="hidden md:table-cell">{guest.firstName}</td>
+    <tr className={deleted ? 'text-gray-400 line-through md:odd:bg-white md:even:bg-slate-50' : 'md:odd:bg-white md:even:bg-slate-50'}>
+      <td className="hidden md:table-cell pl-4">{guest.firstName}</td>
       <td className="hidden md:table-cell">{guest.lastName}</td>
       <td>
         <span
@@ -70,14 +70,12 @@ export default function GuestTableRow({ guest }: GuestTableRowProps) {
       </td>
       <td className="hidden md:table-cell text-gray-500 whitespace-nowrap">{guest.timestamp.toLocaleDateString('en-US')}</td>
       <td className="hidden md:table-cell whitespace-nowrap">{guest.staffName}</td>
-      <td className="hidden md:table-cell">
+      <td className="hidden md:table-cell text-end pr-4">
         <button 
           onClick={handleDelete}
           disabled={ deleted }
           className={deleted ? 'text-slate-300 ' : ' text-red-500 hover:text-red-400 py-1'}
-        >
-          Delete
-        </button>
+        >Delete</button>
       </td >
       <td className="md:hidden text-sm cursor-pointer" id="mobiletable">
       <div className="grid grid-cols-1 gap-4 block"> <a onClick={deleted ?  nothing : handleDelete}>
