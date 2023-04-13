@@ -117,11 +117,12 @@ const handleClearSearch = () => {
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col mb-4">
             <label htmlFor="firstName" className="mb-1 font-semibold">
-              First Name:
+              First:
             </label>
             <input
               type="text"
               id="firstName"
+              placeholder="Enter guest first name..."
               required pattern="[A-Za-z-' ]{1,32}"
               className="border border-gray-300 rounded px-3 py-2"
               value={firstName}
@@ -130,14 +131,16 @@ const handleClearSearch = () => {
           </div>
           <div className="flex flex-col mb-4">
             <label htmlFor="lastName" className="mb-1 font-semibold">
-              Last Name:
+              Last:
             </label>
             <input
               type="text"
               id="lastName"
+              placeholder="Enter guest last name..."
               required pattern="[A-Za-z-' ]{1,32}"
               className="border border-gray-300 rounded px-3 py-2"
               value={lastName}
+           
               onChange={(event) => setLastName(event.target.value)}
             />
           </div>
@@ -159,11 +162,12 @@ const handleClearSearch = () => {
           </div> 
           <div className="flex flex-col mb-4">
             <label htmlFor="lastName" className="mb-1 font-semibold">
-              Tester Name:
+              Tester:
             </label>
             <input
               type="text"
               id="staffName"
+              placeholder="Enter tester full name..."
               required pattern="[a-zA-Z-' ]{1,40}"
               className="border border-gray-300 rounded px-3 py-2"
               value={staffName}
