@@ -178,7 +178,7 @@ const handleClearSearch = () => {
     </div>
 
     <div className="bg-gray-200 h-10"></div>
-     <div className="bg-gray-200 pb-100 flex justify-center items-center">
+     <div className="bg-gray-200 min-h-[550px] flex justify-center ">
      <div className="max-w-3xl w-full bg-white p-6 rounded-lg">
        <input
          type="text"
