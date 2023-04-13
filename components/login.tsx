@@ -18,7 +18,6 @@ useEffect(() => {
         alert("Error. Your account must be approved for access.");
        firebase.auth().signOut();
       }
-      
     } else {
       setUser(null);
       router.push("/");
