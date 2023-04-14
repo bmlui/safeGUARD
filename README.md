@@ -2,8 +2,6 @@
 
 Created with Next.js, this is an online web app built for logging swim tests and LG audit management. 
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
 | Technology                           | Use           |
 | ---------------------------------------- | ----------------- |
 | [Next.js](https://nextjs.org/)           | Web Framework     |
