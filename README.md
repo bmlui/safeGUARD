@@ -1,4 +1,4 @@
-#safeGUARD
+# safeGUARD
 
 Created with Next.js, this is an online web app built for logging swim tests and LG audit management. 
 
