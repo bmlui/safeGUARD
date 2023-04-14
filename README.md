@@ -1,4 +1,19 @@
+#safeGUARD
+Created with Next.js, this is an online web app built for logging swim tests and audit management. 
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+| Web Technology                           | Use Case          |
+| ---------------------------------------- | ----------------- |
+| [Next.js](https://nextjs.org/)           | Web Framework     |
+| [Vercel](https://vercel.com/)            | Web Hosting       |
+| [Tailwind CSS](https://tailwindcss.com/) | Styling Framework |
+| [Firebase Authentication](https://next-auth.js.org/)   | Auth Framework    |
+
+| Storage Technology                        | Use Case                    |
+| ----------------------------------------- | --------------------------- |
+| [Firebase Database](https://firebase.google.com)      | NoSQL Database   |
+
 
 ## Getting Started
 
