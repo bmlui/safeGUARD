@@ -107,8 +107,7 @@ const handleClearSearch = () => {
   
   return (
     <div>
-   
-   <div className="bg-gray-200 h-14"></div>
+      <div className="bg-gray-200 h-14"></div>
       <Login></Login>{  }
       <div className="bg-gray-200 h-10"></div>
     <div className="bg-gray-200 flex justify-center items-center">
@@ -117,12 +116,12 @@ const handleClearSearch = () => {
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col mb-4">
             <label htmlFor="firstName" className="mb-1 font-semibold">
-              First:
+              First Name:
             </label>
             <input
               type="text"
               id="firstName"
-              placeholder="Enter guest first name..."
+              placeholder="Jane"
               required pattern="[A-Za-z-' ]{1,32}"
               className="border border-gray-300 rounded px-3 py-2"
               value={firstName}
@@ -131,12 +130,12 @@ const handleClearSearch = () => {
           </div>
           <div className="flex flex-col mb-4">
             <label htmlFor="lastName" className="mb-1 font-semibold">
-              Last:
+              Last Name:
             </label>
             <input
               type="text"
               id="lastName"
-              placeholder="Enter guest last name..."
+              placeholder="Smith"
               required pattern="[A-Za-z-' ]{1,32}"
               className="border border-gray-300 rounded px-3 py-2"
               value={lastName}
@@ -167,7 +166,7 @@ const handleClearSearch = () => {
             <input
               type="text"
               id="staffName"
-              placeholder="Enter tester full name..."
+              placeholder="Johnny Appleseed"
               required pattern="[a-zA-Z-' ]{1,40}"
               className="border border-gray-300 rounded px-3 py-2"
               value={staffName}
