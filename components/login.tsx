@@ -12,7 +12,7 @@ useEffect(() => {
   const unsubscribe = firebase.auth().onAuthStateChanged(user => {
     if (user) {
       setUser(user);
-      if (user.uid == "wEomp6cjiDQhTdHGvH5amDFX51U2") {
+      if (user.uid === "wEomp6cjiDQhTdHGvH5amDFX51U2" || user.uid === "m6mu4pzXq9UVjDws80CVLshugme2") {
         router.push("/guests");
       } else {
         alert("Error. Your account must be approved for access.");
