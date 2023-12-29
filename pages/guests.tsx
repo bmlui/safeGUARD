@@ -63,9 +63,11 @@ export default function Home() {
     id.toLowerCase().replace(/[^A-Za-z]/g, '').includes(searchTerm.toLowerCase().replace(/[^A-Za-z]/g, ''))
   ), [guests, searchTerm]);
 
+const handleClearSearch = () => {
+    setSearchTerm('');
+  };
 
-  const handleSubmit = useCallback(
-    async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event:any) => {
     event.preventDefault();
     if (!isConnected) {
       alert('You are not connected to the internet. Please connect to the internet and try again.');
@@ -118,8 +120,7 @@ export default function Home() {
   
   return (
     <div>
-   
-   <div className="bg-gray-200 h-14"></div>
+      <div className="bg-gray-200 h-14"></div>
       <Login></Login>{  }
       <div className="bg-gray-200 h-10"></div>
     <div className="bg-gray-200 flex justify-center items-center">
@@ -133,6 +134,7 @@ export default function Home() {
             <input
               type="text"
               id="firstName"
+              placeholder="Jane"
               required pattern="[A-Za-z-' ]{1,32}"
               className="border border-gray-300 rounded px-3 py-2"
               value={firstName}
@@ -146,9 +148,11 @@ export default function Home() {
             <input
               type="text"
               id="lastName"
+              placeholder="Smith"
               required pattern="[A-Za-z-' ]{1,32}"
               className="border border-gray-300 rounded px-3 py-2"
               value={lastName}
+           
               onChange={(event) => setLastName(event.target.value)}
             />
           </div>
@@ -170,11 +174,12 @@ export default function Home() {
           </div> 
           <div className="flex flex-col mb-4">
             <label htmlFor="lastName" className="mb-1 font-semibold">
-              Tester Name:
+              Tester:
             </label>
             <input
               type="text"
               id="staffName"
+              placeholder="Johnny Appleseed"
               required pattern="[a-zA-Z-' ]{1,40}"
               className="border border-gray-300 rounded px-3 py-2"
               value={staffName}
@@ -189,7 +194,7 @@ export default function Home() {
     </div>
 
     <div className="bg-gray-200 h-10"></div>
-     <div className="bg-gray-200 pb-100 flex justify-center items-center">
+     <div className="bg-gray-200 min-h-[550px] flex justify-center ">
      <div className="max-w-3xl w-full bg-white p-6 rounded-lg">
        <input
          type="text"
@@ -198,14 +203,16 @@ export default function Home() {
          value={searchTerm}
          onChange={(event) => setSearchTerm(event.target.value)}
        />
+       <button onClick={handleClearSearch} className="ml-4 bg-slate-400 text-white py-2 px-4 rounded hover:bg-slate-500">Clear</button>
        <table className="table-auto min-w-full divide-y divide-gray-200">
-         <thead>
+         <thead className="">
            <tr className="hidden md:table-row">
              <th className="px-4 py-2">First</th>
              <th className="px-4 py-2">Last</th>
              <th className="px-4 py-2">Color</th>
              <th className="px-4 py-2">Date</th>
              <th className="px-4 py-2">Staff</th>
+             <th className="px-4 py-2"></th>
            </tr>
          </thead>
          <tbody>

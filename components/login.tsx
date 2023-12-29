@@ -12,13 +12,12 @@ useEffect(() => {
   const unsubscribe = firebase.auth().onAuthStateChanged(user => {
     if (user) {
       setUser(user);
-      if (user.uid == "wEomp6cjiDQhTdHGvH5amDFX51U2") {
+      if (user.uid === "wEomp6cjiDQhTdHGvH5amDFX51U2" || user.uid === "m6mu4pzXq9UVjDws80CVLshugme2") {
         router.push("/guests");
       } else {
         alert("Error. Your account must be approved for access.");
        firebase.auth().signOut();
       }
-      
     } else {
       setUser(null);
       router.push("/");
@@ -54,7 +53,7 @@ const signOut = async () => {
         ) : (
           <div className='text-center'>
             <p className="text-lg font-bold">safeGUARD</p>
-            <p className="">Unauthorized use is strictly prohibithed.</p>
+            <p className="">For use by client facilities only</p>
           <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4" onClick={signInWithGoogle}>Sign in with Google</button>
           </div>
         )}
