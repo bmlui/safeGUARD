@@ -53,7 +53,7 @@ const signOut = async () => {
         ) : (
           <div className='text-center'>
             <p className="text-lg font-bold">safeGUARD</p>
-            <p className="">Unauthorized use is strictly prohibithed.</p>
+            <p className="">For use by client facilities only</p>
           <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4" onClick={signInWithGoogle}>Sign in with Google</button>
           </div>
         )}
