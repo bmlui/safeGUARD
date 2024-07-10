@@ -21,11 +21,11 @@ const router = useRouter();
             router.push("/guests");
           } else {
             alert("Error. Your account must be approved for access.");
-            await firebase.auth().signOut();
+             firebase.auth().signOut();
           }
         } else {
           alert("Error. No email found for this user.");
-          await firebase.auth().signOut();
+           firebase.auth().signOut();
         }
       } else {
         setUser(null);
