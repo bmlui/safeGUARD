@@ -8,24 +8,33 @@ export default function Auth() {
 const [user, setUser] = useState<any | null>(null);
 const router = useRouter();
 
-useEffect(() => {
-  const unsubscribe = firebase.auth().onAuthStateChanged(user => {
-    if (user) {
-      setUser(user);
-      if (user.uid === "wEomp6cjiDQhTdHGvH5amDFX51U2" || user.uid === "m6mu4pzXq9UVjDws80CVLshugme2") {
-        router.push("/guests");
+ useEffect(() => {
+    const unsubscribe = firebase.auth().onAuthStateChanged(async (user) => {
+      if (user) {
+          setUser(user);
+        // Check if user's email is in approved list in Firestore
+        const userEmail = user.email;
+        if (userEmail) {
+          const approvedEmailsRef = firebase.firestore().collection('approvedEmails').doc(userEmail);
+          const doc = await approvedEmailsRef.get();
+          if (doc.exists) {
+            router.push("/guests");
+          } else {
+            alert("Error. Your account must be approved for access.");
+            await firebase.auth().signOut();
+          }
+        } else {
+          alert("Error. No email found for this user.");
+          await firebase.auth().signOut();
+        }
       } else {
-        alert("Error. Your account must be approved for access.");
-       firebase.auth().signOut();
+        setUser(null);
+        router.push("/");
       }
-    } else {
-      setUser(null);
-      router.push("/");
-    }
-  });
+    });
 
-  return () => unsubscribe();
-}, []);
+    return () => unsubscribe();
+  }, [router]);
 
 const signInWithGoogle = async () => {
   const provider = new firebase.auth.GoogleAuthProvider();
