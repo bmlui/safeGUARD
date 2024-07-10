@@ -10,15 +10,14 @@ const router = useRouter();
 
  useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged(async (user) => {
-      setLoading(true);
       if (user) {
+          setUser(user);
         // Check if user's email is in approved list in Firestore
         const userEmail = user.email;
         if (userEmail) {
           const approvedEmailsRef = firebase.firestore().collection('approvedEmails').doc(userEmail);
           const doc = await approvedEmailsRef.get();
           if (doc.exists) {
-            setUser(user);
             router.push("/guests");
           } else {
             alert("Error. Your account must be approved for access.");
@@ -32,7 +31,6 @@ const router = useRouter();
         setUser(null);
         router.push("/");
       }
-      setLoading(false);
     });
 
     return () => unsubscribe();
